@@ -1,22 +1,31 @@
 pipeline {
-    // 1. Force the child pipeline to reuse Pipeline C's folder context
     agent none 
     
     stages {
         stage('B1: Run Submodule Linting') {
-            agent any
+            agent {
+                node {
+                    label 'built-in'
+                    customWorkspace "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\poc1"
+                }
+            }
             steps {
                 dir('ansible') {
                     echo "Checking playbook configuration inside submodule..."
                 }
             }
         }
+        
         stage('B2: Execute Playbook') {
-            agent any
+            agent {
+                node {
+                    label 'built-in'
+                    customWorkspace "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\poc1"
+                }
+            }
             steps {
                 dir('ansible') {
-                    // 2. Wrap the command inside 'wsl' so Windows can execute the Linux binary
-                    bat 'wsl ansible-playbook playbook.yml'
+                    bat 'echo Executing playbook B block on Windows agent...'
                 }
             }
         }
