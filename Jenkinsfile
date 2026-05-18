@@ -11,7 +11,7 @@ pipeline {
         stage('B2: Execute Playbook') {
             steps {
                 dir('ansible') {
-                    sh 'ansible-playbook playbook.yml'
+                    bat 'ansible-playbook playbook.yml'
                 }
             }
         }
