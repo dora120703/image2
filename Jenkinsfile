@@ -1,10 +1,16 @@
-def runPipeline() {
-    // These stages will dynamically populate the Stage View UI
-    stage('B1: Run Linters') {
-        echo "Running security audits and code formatting compliance..."
-    }
-    stage('B2: Build Base Image') {
-        echo "Compiling system configurations for Compute Image B..."
+pipeline {
+    agent any
+    
+    stages {
+        stage('B1: Run Playbook Linters') {
+            steps {
+                echo "Running syntax checking and security scans on Image 2 codebase..."
+            }
+        }
+        stage('B2: Build VM Base Image') {
+            steps {
+                echo "Compiling underlying system layers for Compute Image 2..."
+            }
+        }
     }
 }
-return this
