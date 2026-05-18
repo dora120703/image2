@@ -1,15 +1,18 @@
 pipeline {
     agent any
-    
     stages {
-        stage('B1: Run Playbook Linters') {
+        stage('B1: Run Submodule Linting') {
             steps {
-                echo "Running syntax checking and security scans on Image 2 codebase..."
+                dir('ansible') {
+                    echo "Checking playbook configuration inside submodule..."
+                }
             }
         }
-        stage('B2: Build VM Base Image') {
+        stage('B2: Execute Playbook') {
             steps {
-                echo "Compiling underlying system layers for Compute Image 2..."
+                dir('ansible') {
+                    sh 'ansible-playbook playbook.yml'
+                }
             }
         }
     }
