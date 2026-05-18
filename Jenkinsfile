@@ -1,31 +1,19 @@
 pipeline {
-    agent none 
+    // Standard declaration allows it to take over the primary workspace folder
+    agent any 
     
     stages {
-        stage('B1: Run Submodule Linting') {
-            agent {
-                node {
-                    label 'built-in'
-                    customWorkspace "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\poc1"
-                }
-            }
+        stage('B1: Verify Layout') {
             steps {
-                dir('ansible') {
-                    echo "Checking playbook configuration inside submodule..."
-                }
+                echo "Locating submodule structure..."
+                // Runs natively inside the clean workspace path where submodules are loaded
+                bat 'dir ansible' 
             }
         }
-        
-        stage('B2: Execute Playbook') {
-            agent {
-                node {
-                    label 'built-in'
-                    customWorkspace "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\poc1"
-                }
-            }
+        stage('B2: Run Submodule Playbook') {
             steps {
                 dir('ansible') {
-                    bat 'echo Executing playbook B block on Windows agent...'
+                    bat 'echo Executing playbook block on Windows agent...'
                 }
             }
         }
