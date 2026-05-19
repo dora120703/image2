@@ -1,20 +1,29 @@
 pipeline {
-    // Standard declaration allows it to take over the primary workspace folder
-    agent any 
+    agent { label 'built-in' } 
+    
+    environment {
+        ZONE = 'us-central1-a'
+        IMAGE_NAME = "poc-app2-image-${BUILD_NUMBER}"
+    }
     
     stages {
-        stage('B1: Verify Layout') {
+        stage('Cleanup') {
             steps {
-                echo "Locating submodule structure..."
-                // Runs natively inside the clean workspace path where submodules are loaded
-                bat 'dir ansible' 
+                catchError {
+                    bat 'ci/cleanup_images.bat'
+                }
             }
         }
-        stage('B2: Run Submodule Playbook') {
+        stage('Apply Ansible config') {
             steps {
                 dir('ansible') {
-                    bat 'echo Executing playbook block on Windows agent...'
+                    bat 'echo Processing secondary deployment maps inside submodule...'
                 }
+            }
+        }
+        stage('Create Image') {
+            steps {
+                bat 'ci/create_image.bat'
             }
         }
     }
