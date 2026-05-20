@@ -1,0 +1,3 @@
+@Library('platform-automation-scripts') _
+
+Stage3ImageRebuild()
